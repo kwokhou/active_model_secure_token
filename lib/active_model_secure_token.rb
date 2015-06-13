@@ -1,5 +1,5 @@
-require 'active_record'
-module ActiveRecord
+require 'active_support'
+module ActiveModel
   module SecureToken
     extend ActiveSupport::Concern
 
@@ -37,5 +37,3 @@ module ActiveRecord
     end
   end
 end
-
-ActiveRecord::Base.send(:include, ActiveRecord::SecureToken)

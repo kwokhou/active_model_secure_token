@@ -6,6 +6,7 @@ $LOAD_PATH.unshift libdir unless $LOAD_PATH.include?(libdir)
 
 require "rubygems"
 require "active_model_secure_token"
+require "active_record"
 require "minitest/autorun"
 require "minitest/unit"
 
