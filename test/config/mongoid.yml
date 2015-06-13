@@ -1,0 +1,6 @@
+test:
+  sessions:
+    default:
+      database: active_model_secure_token
+      hosts:
+        - localhost:27017

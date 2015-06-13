@@ -7,8 +7,12 @@ $LOAD_PATH.unshift libdir unless $LOAD_PATH.include?(libdir)
 require "rubygems"
 require "active_model_secure_token"
 require "active_record"
+require "mongoid"
 require "minitest/autorun"
 require "minitest/unit"
+
+ENV['MONGOID_ENV'] = 'test'
+Mongoid.load!('./config/mongoid.yml')
 
 Dir["models/*.rb"].each {|file| require file }
 
