@@ -1,11 +1,6 @@
-[![Build Status](https://travis-ci.org/robertomiranda/has_secure_token.png)](https://travis-ci.org/robertomiranda/has_secure_token)
-[![Gem Version](https://badge.fury.io/rb/has_secure_token.svg)](http://badge.fury.io/rb/has_secure_token)
-[![Dependency Status](https://gemnasium.com/robertomiranda/has_secure_token.svg)](https://gemnasium.com/robertomiranda/has_secure_token)
-[![Code Climate](https://codeclimate.com/github/robertomiranda/has_secure_token/badges/gpa.svg)](https://codeclimate.com/github/robertomiranda/has_secure_token)
+# active_model_secure_token
 
-# HasSecureToken
-
-HasSecureToken provides an easy way to generate uniques random tokens for any model in ruby on rails. **SecureRandom::base58** is used to generate the 24-character unique tokens, so collisions are highly unlikely.
+Provides an easy way to generate uniques random tokens for any ActiveModel. **SecureRandom::base58** is used to generate the 24-character unique tokens, so collisions are highly unlikely.
 
 **Note** If you're worried about possible collissions, there's a way to generate a race condition in the database in the same way that [validates_uniqueness_of](http://api.rubyonrails.org/classes/ActiveRecord/Validations/ClassMethods.html) can. You're encouraged to add an unique index in the database to deal
 
@@ -13,7 +8,7 @@ HasSecureToken provides an easy way to generate uniques random tokens for any mo
 
 Add this line to your application's Gemfile:
 
-    gem 'has_secure_token'
+    gem 'active_model_secure_token'
 
 And then run:
 
@@ -21,9 +16,11 @@ And then run:
 
 Or install it yourself as:
 
-    $ gem install has_secure_token
+    $ gem install active_model_secure_token
 
-## Setting your Model
+This gem does not depend on ActiveRecord, only on ActiveModel. It works fine with ActiveRecord and Mongoid. You will need to `include ActiveModel::SecureToken` in your model/document before you can use it.
+
+## Setting your ActiveRecord model
 
 The first step is to generate a migration in order to add the token key field.
 
@@ -39,6 +36,7 @@ Then run `rake db:migrate` in order to update users table in the database. The n
 ```ruby
 # Schema: User(token:string, auth_token:string)
 class User < ActiveRecord::Base
+  include ActiveModel::SecureToken
   has_secure_token
 end
 
@@ -53,6 +51,7 @@ To use a custom column to store the token key field you can specify the column_n
 ```ruby
 # Schema: User(token:string, auth_token:string)
 class User < ActiveRecord::Base
+  include ActiveModel::SecureToken
   has_secure_token :auth_token
 end
 
@@ -61,6 +60,21 @@ user.save
 user.auth_token # => "pX27zsMN2ViQKta1bGfLmVJE"
 user.regenerate_auth_token # => true
 ```
+
+## Setting your Mongoid document
+
+Add the field, include this gem and enable it like so:
+
+```ruby
+class User
+  include Mongoid::Document
+  include ActiveModel::SecureToken
+  field :token, type: String
+  has_secure_token
+end
+```
+
+The Mongoid document has all the same methods as the ActiveRecord model.
 
 ## Running tests
 
@@ -73,13 +87,5 @@ $ rake test
 Should return
 
 ```shell
-5 runs, 9 assertions, 0 failures, 0 errors, 0 skips
+8 runs, 14 assertions, 0 failures, 0 errors, 0 skips
 ```
-
-## Contributing
-
-1. Fork it ( https://github.com/robertomiranda/has_secure_token/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
