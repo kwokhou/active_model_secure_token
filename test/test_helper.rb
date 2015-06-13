@@ -27,4 +27,4 @@ FileUtils.rm_f DB_FILE
 
 ActiveRecord::Base.establish_connection :adapter => 'sqlite3', :database => DB_FILE
 
-load 'schema.rb'
+load './config/schema.rb'
